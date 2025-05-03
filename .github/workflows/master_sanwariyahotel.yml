@@ -1,33 +1,69 @@
-name: Azure Deployment
+name: Build and deploy Next.js app to Azure Web App - sanwariyahotel
 
 on:
   push:
     branches:
       - master
+  workflow_dispatch:
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Install dependencies and build
+        run: |
+          npm install
+          npm run build
 
-      - name: Build the app
-        run: npm run build
+      - name: Zip production build
+        run: |
+          zip -r release.zip . -x "*.git*" "node_modules/*" "release.zip"
 
-      - name: Zip for deployment
-        run: zip -r app.zip . -x '*.git*'
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nextjs-app
+          path: release.zip
 
-      - name: Deploy to Azure
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: nextjs-app
+
+      - name: Extract zip
+        run: unzip release.zip
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_C0E793A1316B4573A5D468E91EA71606 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_B9F30BBBE2A540E9A1D3B16D6D4944C3 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_7DD7A1EA2C9148C59ECF354FA24DCCE7 }}
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'sanwariyahotel'
-          package: app.zip
+          package: .

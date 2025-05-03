@@ -6,7 +6,7 @@ import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "My Hotel - Luxury Stay & Events in Sehore, MP",
+  title: "Hotel Sanwariya- Luxury Stay & Events in Sehore, MP",
   description: "Experience luxury, comfort, and exceptional service at affordable prices in the heart of Sehore, Madhya Pradesh.",
 };
 

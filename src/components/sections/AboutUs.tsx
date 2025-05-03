@@ -60,7 +60,7 @@ export default function AboutUs() {
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">About My Hotel</h2>
           <p className="text-gray-600 max-w-3xl mx-auto">
-            Located in the heart of Sehore, MP, My Hotel offers the perfect
+            Located in the heart of Sehore, MP, Hotel Sanwariya offers the perfect
             combination of elegance, comfort, and affordability. Whether you're
             planning a wedding, a party, or a comfortable stay, we are dedicated
             to making your experience memorable.
