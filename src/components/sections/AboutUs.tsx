@@ -63,7 +63,7 @@ export default function AboutUs() {
             Located in the heart of Sehore, MP, Hotel Sanwariya offers the perfect
             combination of elegance, comfort, and affordability. Whether you're
             planning a wedding, a party, or a comfortable stay, we are dedicated
-            to making your experience memorable.
+            to making your experience memorable. 
           </p>
         </div>
 
